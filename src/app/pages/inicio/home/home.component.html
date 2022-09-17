@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="!MatchDocument">
+        Por favor verifique los datos ingresados
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>
+    </div>
+</div>
+<div class="login">
+  <form [formGroup]="userForm"  class="custom-form needs-validation was-validated" (ngSubmit)="toogleLoading(userForm.value)">
+      <h4>Todos los campos son obligatorias</h4>
+      <div class="mb-3">
+          <label for="tipoDocumento" class="form-label">Tipo de documento</label>
+          <select class="form-select" formControlName="tipoDocumento" id="tipoDocumento" name="tipoDocumento"  required>
+              <option selected disabled value="">Seleccione una opción</option>
+              <option value="CC">Cédula de ciudadanía</option>
+              <option value="pas">Pasaporte</option>
+          </select>
+          <div class="invalid-feedback">
+              Debes seleccionar un valor
+            </div>
+      </div>
+      <div class="mb-3">
+          <label for="numeroDocumento" class="form-label">Numero de documento</label>
+          <input type="number" formControlName="numeroDocumento"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==11) return false;" id="numeroDocumento" class="form-control" placeholder="0" required>
+          <div class="invalid-feedback">
+              Por favor complete este campo
+            </div>
+      </div>
+      <div class="col-12">
+          <button ng-disabled="myForm.$invalid || myForm.$pending" class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+  </form>
+</div>
+
+</div>
+
+
+

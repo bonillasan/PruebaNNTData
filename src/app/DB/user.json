@@ -1,0 +1,20 @@
+{
+  "usuarios":[
+      {
+          "primerNombre":"Santiago",
+          "segundoNombre":"Alejandro",
+          "primerApellido":"Bonilla",
+          "segundoApellido":"Idrobo",
+          "numeroDocumento":1062327775,
+          "tipoDocumento":"CC"
+      },
+      {
+        "primerNombre":"Ana",
+        "segundoNombre":"Maria",
+        "primerApellido":"Bonilla",
+        "segundoApellido":"Idrobo",
+        "numeroDocumento":105895437,
+        "tipoDocumento":"CC"
+    }
+  ]
+}

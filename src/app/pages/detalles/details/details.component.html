@@ -1,0 +1,19 @@
+<div class="container" *ngFor="let usuarios of usuario">
+    <div class="custom-form" >
+        <div>
+            <h3>Información básica</h3>
+        </div>
+        <div class="mb-8">
+            <label for="exampleFormControlTextarea1" class="form-label">Primer Apellido</label>
+            <input class="form-control" type="text" value="{{usuarios.primerApellido}}"  aria-label="Disabled input example"
+                disabled readonly></div>
+        <div class="mb-8">
+            <label for="exampleFormControlTextarea1" class="form-label">Primer Nombre</label>
+            <input class="form-control" value="{{usuarios.primerNombre}}" type="text" aria-label=""
+                disabled readonly>
+        </div>
+        <div class="mb-8">
+            <button class="btn btn-primary" routerLink="/">Atras</button>
+        </div>
+    </div>
+</div>
