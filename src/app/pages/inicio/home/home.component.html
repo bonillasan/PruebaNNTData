@@ -27,7 +27,7 @@
       </div>
       <p class="error__text color--error"
         *ngIf="userForm.get('numeroDocumento')?.touched && userForm.get('numeroDocumento')?.errors?.['minlength']">
-        Debes ingresar un número de cédula válido {{ model }}
+        Debes ingresar un número de cédula válido
       </p>
       <div class="col-12">
         <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">
