@@ -6,7 +6,6 @@ separador.addEventListener('keyup', (e) => {
 
     var salida = [];
     var aux = '';
-
     var paginador = Math.ceil(entrada.length / 3);
 
     for(let i = 0; i < paginador; i++) {

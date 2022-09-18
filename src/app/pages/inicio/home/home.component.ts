@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Vali
 import { Router, RouterLink } from '@angular/router';
 import { min } from 'rxjs';
 import { Usuarios } from 'src/app/models/usuarios';
+import { CargarScriptsService } from 'src/app/services/cargar-scripts.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
@@ -14,8 +15,10 @@ export class HomeComponent implements OnInit {
 
   isLoading: boolean = false;
   MatchDocument: boolean = true;
+  model: string ='';
   usuario: any = [];
-  constructor(private usuarioSvc: UsuariosService, private route: Router, private readonly fb:FormBuilder) {
+  constructor(private usuarioSvc: UsuariosService, private route: Router, private readonly fb:FormBuilder, private cargarScripts: CargarScriptsService) {
+    cargarScripts.cargar(['index']);
   }
 
   userForm!:FormGroup;
@@ -40,6 +43,28 @@ export class HomeComponent implements OnInit {
 
   toogleLoading = (form: Usuarios) => {
     this.MatchDocument = true;
+
+    var entrada = form.numeroDocumento.split('.').join('');
+    entrada = entrada.split('').reverse();
+    console.log(entrada);
+
+
+    var salida = [];
+    var aux = '';
+    var paginador = Math.ceil(entrada.length / 3);
+
+    for(let i = 0; i < paginador; i++) {
+        for(let j = 0; j < 3; j++) {
+            "123 4"
+            if(entrada[j + (i*3)] != undefined) {
+                aux += entrada[j + (i*3)];
+            }
+        }
+        salida.push(aux);
+        aux = '';
+
+        form.numeroDocumento = salida.join('').split("").reverse().join('');
+    }
     console.log(form);
     console.log("userform ->",this.userForm.valid, "valores", this.userForm);
     this.usuarioSvc.obtenerUsuariosXId(form.numeroDocumento).subscribe(respuesta =>{
@@ -61,7 +86,7 @@ export class HomeComponent implements OnInit {
   initForm(): FormGroup {
     return this.fb.group({
     tipoDocumento: ['', Validators.required],
-    numeroDocumento: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(11)]],
+    numeroDocumento: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(14)]],
     });
   }
 
