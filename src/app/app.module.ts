@@ -7,6 +7,7 @@ import { HomeComponent } from './pages/inicio/home/home.component';
 import { DetailsComponent } from './pages/detalles/details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CargarScriptsService } from './services/cargar-scripts.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    CargarScriptsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
