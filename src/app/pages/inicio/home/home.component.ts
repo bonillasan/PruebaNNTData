@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { min } from 'rxjs';
 import { Usuarios } from 'src/app/models/usuarios';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
@@ -12,38 +13,45 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 export class HomeComponent implements OnInit {
 
   isLoading: boolean = false;
-  MatchDocument: Boolean = true;
+  MatchDocument: boolean = true;
   usuario: any = [];
   constructor(private usuarioSvc: UsuariosService, private route: Router, private readonly fb:FormBuilder) {
   }
 
-  userForm!: FormGroup;
+  userForm!:FormGroup;
 
-  buttonState: Boolean = false;
+
+  checkLimit(min: number, max: number): ValidatorFn {
+    console.log(min);
+
+    return (c: AbstractControl): { [key: string]: boolean } | null => {
+        if (c.value && (isNaN(c.value) || c.value < min || c.value > max)) {
+            return { 'range': true };
+        }
+        return null;
+    };
+  }
+
 
   ngOnInit(): void {
     this.userForm = this.initForm();
   }
 
+
   toogleLoading = (form: Usuarios) => {
-    if(form != null){
+    this.MatchDocument = true;
+    console.log(form);
+    console.log("userform ->",this.userForm.valid, "valores", this.userForm);
     this.usuarioSvc.obtenerUsuariosXId(form.numeroDocumento).subscribe(respuesta =>{
       this.usuario = respuesta;
       localStorage.setItem('user', JSON.stringify(respuesta));
-      if(this.usuario[0] !=null && this.usuario[0].tipoDocumento == this.userForm.value.tipoDocumento){
-        this.buscarUsuario();
+      if(this.usuario.length > 0 && this.usuario[0].tipoDocumento == this.userForm.value.tipoDocumento){
+          this.buscarUsuario();
       }
-      else if(this.usuario[0]){
-        this.lanzarAlerta();
+      else{
+        this.MatchDocument = false;
       }
     })
-  }
-  }
-
-  public lanzarAlerta(){
-    setTimeout(() =>{
-      this.MatchDocument = false;
-    },1000)
   }
 
   public buscarUsuario(){
@@ -52,10 +60,9 @@ export class HomeComponent implements OnInit {
 
   initForm(): FormGroup {
     return this.fb.group({
-      tipoDocumento: ['', Validators.required],
-      numeroDocumento: [Validators.required],
+    tipoDocumento: ['', Validators.required],
+    numeroDocumento: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(11)]],
     });
   }
-
 
 }
