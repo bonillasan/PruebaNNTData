@@ -9,16 +9,11 @@ export class UsuariosService {
 
   constructor(private http:HttpClient) { }
 
-
+ //************** Metodo que consulta la información del usuario  *************/
  public obtenerUsuariosXId(numerdoDocumento:number){
-  console.log("en service ->>",numerdoDocumento);
-
    return this.http.get(`http://localhost:3000/usuarios?numeroDocumento=${numerdoDocumento}`);
   }
-
   public obtenerUsuarios(url:string){
     return this.http.get(url);
   }
-
-
 }

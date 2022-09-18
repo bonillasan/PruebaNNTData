@@ -15,78 +15,59 @@ export class HomeComponent implements OnInit {
 
   isLoading: boolean = false;
   MatchDocument: boolean = true;
-  model: string ='';
+  model: string = '';
   usuario: any = [];
-  constructor(private usuarioSvc: UsuariosService, private route: Router, private readonly fb:FormBuilder, private cargarScripts: CargarScriptsService) {
+  //************** Se genera la carga de scripts mediante un servicio  *************/
+  constructor(private usuarioSvc: UsuariosService, private route: Router, private readonly fb: FormBuilder, private cargarScripts: CargarScriptsService) {
     cargarScripts.cargar(['index']);
   }
 
-  userForm!:FormGroup;
-
-
-  checkLimit(min: number, max: number): ValidatorFn {
-    console.log(min);
-
-    return (c: AbstractControl): { [key: string]: boolean } | null => {
-        if (c.value && (isNaN(c.value) || c.value < min || c.value > max)) {
-            return { 'range': true };
-        }
-        return null;
-    };
-  }
-
+  //************** Se crea un FormGroup   *************/
+  userForm!: FormGroup;
 
   ngOnInit(): void {
     this.userForm = this.initForm();
   }
 
-
-  toogleLoading = (form: Usuarios) => {
+  //************** Metodo encargado de consultar la información del usuario  *************/
+  consultarUsuario = (form: Usuarios) => {
     this.MatchDocument = true;
 
+    //************** Se descomponene los decimales  *************/
     var entrada = form.numeroDocumento.split('.').join('');
     entrada = entrada.split('').reverse();
-    console.log(entrada);
-
-
     var salida = [];
     var aux = '';
     var paginador = Math.ceil(entrada.length / 3);
-
-    for(let i = 0; i < paginador; i++) {
-        for(let j = 0; j < 3; j++) {
-            "123 4"
-            if(entrada[j + (i*3)] != undefined) {
-                aux += entrada[j + (i*3)];
-            }
+    for (let i = 0; i < paginador; i++) {
+      for (let j = 0; j < 3; j++) {
+        "123 4"
+        if (entrada[j + (i * 3)] != undefined) {
+          aux += entrada[j + (i * 3)];
         }
-        salida.push(aux);
-        aux = '';
-
-        form.numeroDocumento = salida.join('').split("").reverse().join('');
+      }
+      salida.push(aux);
+      aux = '';
+      form.numeroDocumento = salida.join('').split("").reverse().join('');
     }
-    console.log(form);
-    console.log("userform ->",this.userForm.valid, "valores", this.userForm);
-    this.usuarioSvc.obtenerUsuariosXId(form.numeroDocumento).subscribe(respuesta =>{
+    //************** Se realiza la conexión con el servicio  *************/
+    this.usuarioSvc.obtenerUsuariosXId(form.numeroDocumento).subscribe(respuesta => {
       this.usuario = respuesta;
       localStorage.setItem('user', JSON.stringify(respuesta));
-      if(this.usuario.length > 0 && this.usuario[0].tipoDocumento == this.userForm.value.tipoDocumento){
-          this.buscarUsuario();
+      if (this.usuario.length > 0 && this.usuario[0].tipoDocumento == this.userForm.value.tipoDocumento) {
+        this.route.navigate(['/details'])
       }
-      else{
+      else {
         this.MatchDocument = false;
       }
     })
   }
 
-  public buscarUsuario(){
-      this.route.navigate(['/details'])
-  }
-
+  //************** Metodo encargado de las validaciones del formulario  *************/
   initForm(): FormGroup {
     return this.fb.group({
-    tipoDocumento: ['', Validators.required],
-    numeroDocumento: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(14)]],
+      tipoDocumento: ['', Validators.required],
+      numeroDocumento: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(14)]],
     });
   }
 

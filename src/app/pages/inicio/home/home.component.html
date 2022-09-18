@@ -1,38 +1,39 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-12">
       <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="!MatchDocument">
         Por favor verifique los datos ingresados
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-   </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </div>
-</div>
-  <form [formGroup]="userForm"  class="custom-form" (ngSubmit)="toogleLoading(userForm.value)">
+  </div>
+  <div class="col-md-12">
+    <form [formGroup]="userForm" class="custom-form" (ngSubmit)="consultarUsuario(userForm.value)">
       <h4>Todos los campos son obligatorias</h4>
       <div class="mb-3">
-          <label for="dropdown"  class="form-label">Tipo de documento</label>
-          <select class="form-select" id="dropdown" formControlName="tipoDocumento">
-              <option selected disabled value="">Seleccione una opción</option>
-              <option value="CC">Cédula de ciudadanía</option>
-              <option value="pas">Pasaporte</option>
-          </select>
+        <label for="dropdown" class="form-label">Tipo de documento</label>
+        <select class="form-select" id="dropdown" formControlName="tipoDocumento">
+          <option selected disabled value="">Seleccione una opción</option>
+          <option value="CC">Cédula de ciudadanía</option>
+          <option value="pas">Pasaporte</option>
+        </select>
       </div>
       <div class="mb-3">
-          <label for="numeroDocumento" class="form-label">Numero de documento</label>
-          <input type="text" formControlName="numeroDocumento" autofocus  autocomplete="off" onkeypress="if(this.value.length==14) return false; return (event.charCode >= 48 && event.charCode <= 57);" [(ngModel)]="model" inputmode="numeric"  id="numeroDocumento" name="age"
-           class="form-control" placeholder="0">
+        <label for="numeroDocumento" class="form-label">Numero de documento</label>
+        <input type="text" formControlName="numeroDocumento" autofocus autocomplete="off"
+          onkeypress="if(this.value.length==14) return false; return (event.charCode >= 48 && event.charCode <= 57);"
+          [(ngModel)]="model" inputmode="numeric" id="numeroDocumento" name="age" class="form-control"
+          placeholder="0" />
       </div>
-      <p class="error__text color--error" *ngIf="userForm.get('numeroDocumento')?.touched && userForm.get('numeroDocumento')?.errors?.['minlength']">
-        Debes ingresar un número de cédula válido {{model}}
+      <p class="error__text color--error"
+        *ngIf="userForm.get('numeroDocumento')?.touched && userForm.get('numeroDocumento')?.errors?.['minlength']">
+        Debes ingresar un número de cédula válido {{ model }}
       </p>
       <div class="col-12">
-          <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">Buscar</button>
-        </div>
-  </form>
+        <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">
+          Buscar
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-
-
-
-
-
-
