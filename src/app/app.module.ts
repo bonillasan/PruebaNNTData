@@ -23,7 +23,8 @@ import { CargarScriptsService } from './services/cargar-scripts.service';
     FormsModule
   ],
   providers: [
-    CargarScriptsService
+    CargarScriptsService,
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })
